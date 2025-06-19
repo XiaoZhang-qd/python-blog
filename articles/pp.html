@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小时钟HMS 2</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: black;
+        }
+
+        .clock-container {
+            text-align: center;
+            border: 5px solid green;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .clock {
+            font-size: 5vw; /* 自适应大小 */
+            color: green;
+            text-shadow: 0 0 20px green; /* 发光效果 */
+        }
+
+        .toggle-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 2vw; /* 自适应大小 */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: green;
+            color: white;
+            transition: background-color 0.3s;
+        }
+
+        .toggle-button:hover {
+            background-color: darkgreen;
+        }
+    </style>
+</head>
+<body>
+    <div class="clock-container">
+
+        <div id="clock" class="clock"></div>
+    <a href=""><button class="toggle-button">刷新</button></a>
+        <button id="toggle-format" class="toggle-button">选择切换12/24小时</button>
+    </div>
+    <script>
+        let is24HourFormat = false;
+
+        function updateClock() {
+            const clockElement = document.getElementById('clock');
+            const now = new Date();
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0'); // 获取秒数并格式化
+
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            if (!is24HourFormat) {
+                hours = hours % 12 || 12; // 转换为12小时制
+            }
+            clockElement.textContent = `${String(hours).padStart(2, '0')} : ${minutes} : ${seconds} ${is24HourFormat ? '' : ampm}`;
+        }
+
+        function toggleFormat() {
+            is24HourFormat = !is24HourFormat;
+            document.getElementById('toggle-format').textContent = is24HourFormat ? '切换到12小时' : '切换到24小时';
+            updateClock();
+        }
+
+        document.getElementById('toggle-format').addEventListener('click', toggleFormat);
+        setInterval(updateClock, 0.1); // 每0.0001秒更新时钟，越快越好保证运行效果
+        updateClock(); // 初始化时钟显示
+    </script>
+</body>
+</html
